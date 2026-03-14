@@ -6,18 +6,21 @@
 /*   By: scamlett <scamlett@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 11:56:10 by scamlett          #+#    #+#             */
-/*   Updated: 2026/03/14 12:16:54 by scamlett         ###   ########.fr       */
+/*   Updated: 2026/03/14 14:09:33 by scamlett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "rush-01.h"
+#include <unistd.h>
 
-int	esta_en_linea(int tablero[SIZE][SIZE], int indice, int valor, int es_fila)
+int		comprobar_vistas(int tablero[4][4], int *pistas);
+void	imprimir_tablero(int tablero[4][4]);
+
+int	esta_en_linea(int tablero[4][4], int indice, int valor, int es_fila)
 {
 	int	i;
 
 	i = 0;
-	while (i < SIZE)
+	while (i < 4)
 	{
 		if (es_fila && tablero[indice][i] == valor)
 			return (1);
@@ -28,18 +31,18 @@ int	esta_en_linea(int tablero[SIZE][SIZE], int indice, int valor, int es_fila)
 	return (0);
 }
 
-int	resolver_celda(int tablero[SIZE][SIZE], int *pistas, int posicion)
+int	resolver_celda(int tablero[4][4], int *pistas, int posicion)
 {
 	int	fila;
 	int	columna;
 	int	valor;
 
-	if (posicion == SIZE * SIZE)
+	if (posicion == 4 * 4)
 		return (comprobar_vistas(tablero, pistas));
-	fila = posicion / SIZE;
-	columna = posicion % SIZE;
+	fila = posicion / 4;
+	columna = posicion % 4;
 	valor = 1;
-	while (valor <= SIZE)
+	while (valor <= 4)
 	{
 		if (!esta_en_linea(tablero, fila, valor, 1) && !esta_en_linea(tablero,
 				columna, valor, 0))
@@ -65,7 +68,7 @@ int	parsear(char *texto, int *pistas)
 	{
 		if (texto[i] >= '1' && texto[i] <= '4')
 		{
-			if (contador >= SIZE * 4)
+			if (contador >= 4 * 4)
 				return (0);
 			pistas[contador] = texto[i] - '0';
 			contador++;
@@ -74,19 +77,19 @@ int	parsear(char *texto, int *pistas)
 			return (0);
 		i++;
 	}
-	return (contador == SIZE * 4);
+	return (contador == 4 * 4);
 }
 
-int	resolver(int tablero[SIZE][SIZE], int *pistas)
+int	resolver(int tablero[4][4], int *pistas)
 {
 	int	fila;
 	int	columna;
 
 	fila = 0;
-	while (fila < SIZE)
+	while (fila < 4)
 	{
 		columna = 0;
-		while (columna < SIZE)
+		while (columna < 4)
 		{
 			tablero[fila][columna] = 0;
 			columna++;
@@ -98,8 +101,8 @@ int	resolver(int tablero[SIZE][SIZE], int *pistas)
 
 int	main(int cantidad_args, char *argumentos[])
 {
-	int	pistas[SIZE * 4];
-	int	tablero[SIZE][SIZE];
+	int	pistas[4 * 4];
+	int	tablero[4][4];
 
 	if (cantidad_args != 2)
 	{
