@@ -6,7 +6,7 @@
 /*   By: scamlett <scamlett@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 12:14:15 by scamlett          #+#    #+#             */
-/*   Updated: 2026/03/14 12:16:41 by scamlett         ###   ########.fr       */
+/*   Updated: 2026/03/14 12:40:46 by scamlett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,23 +80,23 @@ int	comprobar_vistas(int tablero[SIZE][SIZE], int *pistas)
 
 void	imprimir_tablero(int tablero[SIZE][SIZE])
 {
-	int		i;
-	int		j;
+	int		fila;
+	int		columna;
 	char	c;
 
-	i = 0;
-	while (i < SIZE)
+	fila = 0;
+	while (fila < SIZE)
 	{
-		j = 0;
-		while (j < SIZE)
+		columna = 0;
+		while (columna < SIZE)
 		{
-			c = tablero[i][j] + '0';
+			c = tablero[fila][columna] + '0';
 			write(1, &c, 1);
-			if (j < SIZE - 1)
+			if (columna < SIZE - 1)
 				write(1, " ", 1);
-			j++;
+			columna++;
 		}
 		write(1, "\n", 1);
-		i++;
+		fila++;
 	}
 }
