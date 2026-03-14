@@ -6,7 +6,7 @@
 /*   By: scamlett <scamlett@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 12:14:15 by scamlett          #+#    #+#             */
-/*   Updated: 2026/03/14 14:09:48 by scamlett         ###   ########.fr       */
+/*   Updated: 2026/03/14 15:14:35 by scamlett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	imprimir_tablero(int tablero[4][4])
 		{
 			c = tablero[fila][columna] + '0';
 			write(1, &c, 1);
-			if (columna < 4 - 1)
+			if (columna < 3)
 				write(1, " ", 1);
 			columna++;
 		}
