@@ -6,13 +6,14 @@
 /*   By: scamlett <scamlett@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 11:56:10 by scamlett          #+#    #+#             */
-/*   Updated: 2026/03/14 12:16:54 by scamlett         ###   ########.fr       */
+/*   Updated: 2026/03/14 13:05:41 by scamlett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rush-01.h"
 
-int	esta_en_linea(int tablero[SIZE][SIZE], int indice, int valor, int es_fila)
+static int	esta_en_linea(int tablero[SIZE][SIZE], int indice, int valor,
+		int es_fila)
 {
 	int	i;
 
@@ -28,7 +29,7 @@ int	esta_en_linea(int tablero[SIZE][SIZE], int indice, int valor, int es_fila)
 	return (0);
 }
 
-int	resolver_celda(int tablero[SIZE][SIZE], int *pistas, int posicion)
+static int	resolver_celda(int tablero[SIZE][SIZE], int *pistas, int posicion)
 {
 	int	fila;
 	int	columna;
@@ -54,7 +55,7 @@ int	resolver_celda(int tablero[SIZE][SIZE], int *pistas, int posicion)
 	return (0);
 }
 
-int	parsear(char *texto, int *pistas)
+static int	parsear(char *texto, int *pistas)
 {
 	int	i;
 	int	contador;
@@ -77,7 +78,7 @@ int	parsear(char *texto, int *pistas)
 	return (contador == SIZE * 4);
 }
 
-int	resolver(int tablero[SIZE][SIZE], int *pistas)
+static int	resolver(int tablero[SIZE][SIZE], int *pistas)
 {
 	int	fila;
 	int	columna;

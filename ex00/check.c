@@ -6,13 +6,13 @@
 /*   By: scamlett <scamlett@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 12:14:15 by scamlett          #+#    #+#             */
-/*   Updated: 2026/03/14 12:40:46 by scamlett         ###   ########.fr       */
+/*   Updated: 2026/03/14 13:05:43 by scamlett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rush-01.h"
 
-int	contar_visibles(int linea[SIZE])
+static int	contar_visibles(int linea[SIZE])
 {
 	int	i;
 	int	maximo;
@@ -33,7 +33,7 @@ int	contar_visibles(int linea[SIZE])
 	return (visibles);
 }
 
-void	rellenar_linea(int tablero[SIZE][SIZE], int linea[SIZE], int i,
+static void	rellenar_linea(int tablero[SIZE][SIZE], int linea[SIZE], int i,
 		int modo)
 {
 	int	j;
