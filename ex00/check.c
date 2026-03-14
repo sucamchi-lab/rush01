@@ -6,11 +6,16 @@
 /*   By: scamlett <scamlett@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 12:14:15 by scamlett          #+#    #+#             */
-/*   Updated: 2026/03/14 17:28:26 by scamlett         ###   ########.fr       */
+/*   Updated: 2026/03/14 18:47:29 by scamlett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
+
+#define TOP_TO_BOTTOM 0
+#define BOTTOM_TO_TOP 1
+#define LEFT_TO_RIGHT 2
+#define RIGHT_TO_LEFT 3
 
 int	count_visible_elements(int line[4])
 {
@@ -40,13 +45,13 @@ void	fill_line(int board[4][4], int line[4], int i, int mode)
 	j = 0;
 	while (j < 4)
 	{
-		if (mode == 0)
+		if (mode == TOP_TO_BOTTOM)
 			line[j] = board[j][i];
-		else if (mode == 1)
+		else if (mode == BOTTOM_TO_TOP)
 			line[j] = board[4 - 1 - j][i];
-		else if (mode == 2)
+		else if (mode == LEFT_TO_RIGHT)
 			line[j] = board[i][j];
-		else
+		else if (mode == RIGHT_TO_LEFT)
 			line[j] = board[i][4 - 1 - j];
 		j++;
 	}
@@ -60,16 +65,16 @@ int	check_view(int board[4][4], int *clues)
 	i = 0;
 	while (i < 4)
 	{
-		fill_line(board, line, i, 0);
+		fill_line(board, line, i, TOP_TO_BOTTOM);
 		if (count_visible_elements(line) != clues[i])
 			return (0);
-		fill_line(board, line, i, 1);
+		fill_line(board, line, i, BOTTOM_TO_TOP);
 		if (count_visible_elements(line) != clues[4 + i])
 			return (0);
-		fill_line(board, line, i, 2);
+		fill_line(board, line, i, LEFT_TO_RIGHT);
 		if (count_visible_elements(line) != clues[(4 * 2) + i])
 			return (0);
-		fill_line(board, line, i, 3);
+		fill_line(board, line, i, RIGHT_TO_LEFT);
 		if (count_visible_elements(line) != clues[(4 * 3) + i])
 			return (0);
 		i++;
