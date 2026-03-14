@@ -6,78 +6,79 @@
 /*   By: scamlett <scamlett@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 12:14:15 by scamlett          #+#    #+#             */
-/*   Updated: 2026/03/14 12:03:08 by scamlett         ###   ########.fr       */
+/*   Updated: 2026/03/14 12:13:15 by scamlett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rush-01.h"
 
-int	count_visible(int line[SIZE])
+int	contar_visibles(int linea[SIZE])
 {
 	int	i;
-	int	max;
-	int	visible;
+	int	maximo;
+	int	visibles;
 
 	i = 0;
-	visible = 0;
-	max = 0;
+	visibles = 0;
+	maximo = 0;
 	while (i < SIZE)
 	{
-		if (line[i] > max)
+		if (linea[i] > maximo)
 		{
-			max = line[i];
-			visible++;
+			maximo = linea[i];
+			visibles++;
 		}
 		i++;
 	}
-	return (visible);
+	return (visibles);
 }
 
-static void	fill_line(int board[SIZE][SIZE], int line[SIZE], int i, int mode)
+static void	rellenar_linea(int tablero[SIZE][SIZE], int linea[SIZE], int i,
+		int modo)
 {
 	int	j;
 
 	j = 0;
 	while (j < SIZE)
 	{
-		if (mode == 0)
-			line[j] = board[j][i];
-		else if (mode == 1)
-			line[j] = board[SIZE - 1 - j][i];
-		else if (mode == 2)
-			line[j] = board[i][j];
+		if (modo == 0)
+			linea[j] = tablero[j][i];
+		else if (modo == 1)
+			linea[j] = tablero[SIZE - 1 - j][i];
+		else if (modo == 2)
+			linea[j] = tablero[i][j];
 		else
-			line[j] = board[i][SIZE - 1 - j];
+			linea[j] = tablero[i][SIZE - 1 - j];
 		j++;
 	}
 }
 
-int	check_views(int board[SIZE][SIZE], int *clues)
+int	comprobar_vistas(int tablero[SIZE][SIZE], int *pistas)
 {
 	int	i;
-	int	line[SIZE];
+	int	linea[SIZE];
 
 	i = 0;
 	while (i < SIZE)
 	{
-		fill_line(board, line, i, 0);
-		if (count_visible(line) != clues[i])
+		rellenar_linea(tablero, linea, i, 0);
+		if (contar_visibles(linea) != pistas[i])
 			return (0);
-		fill_line(board, line, i, 1);
-		if (count_visible(line) != clues[SIZE + i])
+		rellenar_linea(tablero, linea, i, 1);
+		if (contar_visibles(linea) != pistas[SIZE + i])
 			return (0);
-		fill_line(board, line, i, 2);
-		if (count_visible(line) != clues[(SIZE * 2) + i])
+		rellenar_linea(tablero, linea, i, 2);
+		if (contar_visibles(linea) != pistas[(SIZE * 2) + i])
 			return (0);
-		fill_line(board, line, i, 3);
-		if (count_visible(line) != clues[(SIZE * 3) + i])
+		rellenar_linea(tablero, linea, i, 3);
+		if (contar_visibles(linea) != pistas[(SIZE * 3) + i])
 			return (0);
 		i++;
 	}
 	return (1);
 }
 
-void	print_board(int board[SIZE][SIZE])
+void	imprimir_tablero(int tablero[SIZE][SIZE])
 {
 	int		i;
 	int		j;
@@ -89,7 +90,7 @@ void	print_board(int board[SIZE][SIZE])
 		j = 0;
 		while (j < SIZE)
 		{
-			c = board[i][j] + '0';
+			c = tablero[i][j] + '0';
 			write(1, &c, 1);
 			if (j < SIZE - 1)
 				write(1, " ", 1);
