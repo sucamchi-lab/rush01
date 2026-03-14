@@ -6,7 +6,7 @@
 /*   By: scamlett <scamlett@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 12:14:15 by scamlett          #+#    #+#             */
-/*   Updated: 2026/03/14 12:13:15 by scamlett         ###   ########.fr       */
+/*   Updated: 2026/03/14 12:16:41 by scamlett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	contar_visibles(int linea[SIZE])
 	return (visibles);
 }
 
-static void	rellenar_linea(int tablero[SIZE][SIZE], int linea[SIZE], int i,
+void	rellenar_linea(int tablero[SIZE][SIZE], int linea[SIZE], int i,
 		int modo)
 {
 	int	j;

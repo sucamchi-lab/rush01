@@ -6,14 +6,13 @@
 /*   By: scamlett <scamlett@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 11:56:10 by scamlett          #+#    #+#             */
-/*   Updated: 2026/03/14 12:15:39 by scamlett         ###   ########.fr       */
+/*   Updated: 2026/03/14 12:16:54 by scamlett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rush-01.h"
 
-static int	esta_en_linea(int tablero[SIZE][SIZE], int indice, int valor,
-		int es_fila)
+int	esta_en_linea(int tablero[SIZE][SIZE], int indice, int valor, int es_fila)
 {
 	int	i;
 
@@ -29,7 +28,7 @@ static int	esta_en_linea(int tablero[SIZE][SIZE], int indice, int valor,
 	return (0);
 }
 
-static int	resolver_celda(int tablero[SIZE][SIZE], int *pistas, int posicion)
+int	resolver_celda(int tablero[SIZE][SIZE], int *pistas, int posicion)
 {
 	int	fila;
 	int	columna;
