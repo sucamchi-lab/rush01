@@ -6,119 +6,119 @@
 /*   By: scamlett <scamlett@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 11:56:10 by scamlett          #+#    #+#             */
-/*   Updated: 2026/03/14 14:09:33 by scamlett         ###   ########.fr       */
+/*   Updated: 2026/03/14 17:27:08 by scamlett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 
-int		comprobar_vistas(int tablero[4][4], int *pistas);
-void	imprimir_tablero(int tablero[4][4]);
+int		check_view(int board[4][4], int *clues);
+void	print_board(int board[4][4]);
 
-int	esta_en_linea(int tablero[4][4], int indice, int valor, int es_fila)
+int	is_value_in_line(int board[4][4], int index, int value, int is_row)
 {
 	int	i;
 
 	i = 0;
 	while (i < 4)
 	{
-		if (es_fila && tablero[indice][i] == valor)
+		if (is_row && board[index][i] == value)
 			return (1);
-		if (!es_fila && tablero[i][indice] == valor)
+		if (!is_row && board[i][index] == value)
 			return (1);
 		i++;
 	}
 	return (0);
 }
 
-int	resolver_celda(int tablero[4][4], int *pistas, int posicion)
+int	solve_cell(int board[4][4], int *clues, int position)
 {
-	int	fila;
-	int	columna;
-	int	valor;
+	int	row;
+	int	column;
+	int	value;
 
-	if (posicion == 4 * 4)
-		return (comprobar_vistas(tablero, pistas));
-	fila = posicion / 4;
-	columna = posicion % 4;
-	valor = 1;
-	while (valor <= 4)
+	if (position == 4 * 4)
+		return (check_view(board, clues));
+	row = position / 4;
+	column = position % 4;
+	value = 1;
+	while (value <= 4)
 	{
-		if (!esta_en_linea(tablero, fila, valor, 1) && !esta_en_linea(tablero,
-				columna, valor, 0))
+		if (!is_value_in_line(board, row, value, 1) && !is_value_in_line(board,
+				column, value, 0))
 		{
-			tablero[fila][columna] = valor;
-			if (resolver_celda(tablero, pistas, posicion + 1))
+			board[row][column] = value;
+			if (solve_cell(board, clues, position + 1))
 				return (1);
-			tablero[fila][columna] = 0;
+			board[row][column] = 0;
 		}
-		valor++;
+		value++;
 	}
 	return (0);
 }
 
-int	parsear(char *texto, int *pistas)
+int	parse(char *text, int *clues)
 {
 	int	i;
-	int	contador;
+	int	counter;
 
 	i = 0;
-	contador = 0;
-	while (texto[i])
+	counter = 0;
+	while (text[i])
 	{
-		if (texto[i] >= '1' && texto[i] <= '4')
+		if (text[i] >= '1' && text[i] <= '4')
 		{
-			if (contador >= 4 * 4)
+			if (counter >= 4 * 4)
 				return (0);
-			pistas[contador] = texto[i] - '0';
-			contador++;
+			clues[counter] = text[i] - '0';
+			counter++;
 		}
-		else if (texto[i] != ' ')
+		else if (text[i] != ' ')
 			return (0);
 		i++;
 	}
-	return (contador == 4 * 4);
+	return (counter == 4 * 4);
 }
 
-int	resolver(int tablero[4][4], int *pistas)
+int	solve(int board[4][4], int *clues)
 {
-	int	fila;
-	int	columna;
+	int	row;
+	int	column;
 
-	fila = 0;
-	while (fila < 4)
+	row = 0;
+	while (row < 4)
 	{
-		columna = 0;
-		while (columna < 4)
+		column = 0;
+		while (column < 4)
 		{
-			tablero[fila][columna] = 0;
-			columna++;
+			board[row][column] = 0;
+			column++;
 		}
-		fila++;
+		row++;
 	}
-	return (resolver_celda(tablero, pistas, 0));
+	return (solve_cell(board, clues, 0));
 }
 
-int	main(int cantidad_args, char *argumentos[])
+int	main(int argc, char *argv[])
 {
-	int	pistas[4 * 4];
-	int	tablero[4][4];
+	int	clues[4 * 4];
+	int	board[4][4];
 
-	if (cantidad_args != 2)
+	if (argc != 2)
 	{
 		write(1, "Error\n", 6);
 		return (1);
 	}
-	if (!parsear(argumentos[1], pistas))
+	if (!parse(argv[1], clues))
 	{
 		write(1, "Error\n", 6);
 		return (1);
 	}
-	if (!resolver(tablero, pistas))
+	if (!solve(board, clues))
 	{
 		write(1, "Error\n", 6);
 		return (1);
 	}
-	imprimir_tablero(tablero);
+	print_board(board);
 	return (0);
 }
