@@ -6,7 +6,7 @@
 /*   By: scamlett <scamlett@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 11:56:10 by scamlett          #+#    #+#             */
-/*   Updated: 2026/03/14 17:27:08 by scamlett         ###   ########.fr       */
+/*   Updated: 2026/03/14 18:37:06 by scamlett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,19 @@ int	solve_cell(int board[4][4], int *clues, int position)
 	return (0);
 }
 
+int	solve(int board[4][4], int *clues)
+{
+	int	position;
+
+	position = 0;
+	while (position < 4 * 4)
+	{
+		board[position / 4][position % 4] = 0;
+		position++;
+	}
+	return (solve_cell(board, clues, 0));
+}
+
 int	parse(char *text, int *clues)
 {
 	int	i;
@@ -78,25 +91,6 @@ int	parse(char *text, int *clues)
 		i++;
 	}
 	return (counter == 4 * 4);
-}
-
-int	solve(int board[4][4], int *clues)
-{
-	int	row;
-	int	column;
-
-	row = 0;
-	while (row < 4)
-	{
-		column = 0;
-		while (column < 4)
-		{
-			board[row][column] = 0;
-			column++;
-		}
-		row++;
-	}
-	return (solve_cell(board, clues, 0));
 }
 
 int	main(int argc, char *argv[])
