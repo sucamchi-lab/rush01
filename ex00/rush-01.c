@@ -5,15 +5,95 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: scamlett <scamlett@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/14 10:29:26 by scamlett          #+#    #+#             */
-/*   Updated: 2026/03/14 11:12:31 by scamlett         ###   ########.fr       */
+/*   Created: 2026/03/14 11:56:10 by scamlett          #+#    #+#             */
+/*   Updated: 2026/03/14 12:08:43 by scamlett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <unistd.h>
+#include "rush-01.h"
 
-#define SIZE 4
+static int	in_line(int board[SIZE][SIZE], int idx, int val, int is_row)
+{
+	int	i;
+
+	i = 0;
+	while (i < SIZE)
+	{
+		if (is_row && board[idx][i] == val)
+			return (1);
+		if (!is_row && board[i][idx] == val)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+static int	solve_cell(int board[SIZE][SIZE], int *clues, int pos)
+{
+	int	row;
+	int	col;
+	int	val;
+
+	if (pos == SIZE * SIZE)
+		return (check_views(board, clues));
+	row = pos / SIZE;
+	col = pos % SIZE;
+	val = 1;
+	while (val <= SIZE)
+	{
+		if (!in_line(board, row, val, 1) && !in_line(board, col, val, 0))
+		{
+			board[row][col] = val;
+			if (solve_cell(board, clues, pos + 1))
+				return (1);
+			board[row][col] = 0;
+		}
+		val++;
+	}
+	return (0);
+}
+
+int	parse(char *str, int *clues)
+{
+	int	i;
+	int	count;
+
+	i = 0;
+	count = 0;
+	while (str[i])
+	{
+		if (str[i] >= '1' && str[i] <= '4')
+		{
+			if (count >= SIZE * 4)
+				return (0);
+			clues[count] = str[i] - '0';
+			count++;
+		}
+		else if (str[i] != ' ')
+			return (0);
+		i++;
+	}
+	return (count == SIZE * 4);
+}
+
+int	solve(int board[SIZE][SIZE], int *clues)
+{
+	int	row;
+	int	col;
+
+	row = 0;
+	while (row < SIZE)
+	{
+		col = 0;
+		while (col < SIZE)
+		{
+			board[row][col] = 0;
+			col++;
+		}
+		row++;
+	}
+	return (solve_cell(board, clues, 0));
+}
 
 int	main(int argc, char *argv[])
 {
@@ -25,7 +105,7 @@ int	main(int argc, char *argv[])
 		write(1, "Error\n", 6);
 		return (1);
 	}
-	if (!parse_input(argv[1], clues))
+	if (!parse(argv[1], clues))
 	{
 		write(1, "Error\n", 6);
 		return (1);
@@ -37,44 +117,4 @@ int	main(int argc, char *argv[])
 	}
 	print_board(board);
 	return (0);
-}
-
-int	parse_input(char *str, int *clues)
-{
-	int	i;
-
-	i = 0;
-	while (i < SIZE * 4)
-	{
-		if (str[i * 2] < '1' || str[i * 2] > '4')
-			return (0);
-		clues[i] = str[i * 2] - '0';
-		if (i * 2 + 1 < SIZE * 8 - 1 && str[i * 2 + 1] != ' ')
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
-void	print_board(int board[SIZE][SIZE])
-{
-	int		i;
-	int		j;
-	char	c;
-
-	i = 0;
-	while (i < SIZE)
-	{
-		j = 0;
-		while (j < SIZE)
-		{
-			c = board[i][j] + '0';
-			write(1, &c, 1);
-			if (j < SIZE - 1)
-				write(1, " ", 1);
-			j++;
-		}
-		write(1, "\n", 1);
-		i++;
-	}
 }
