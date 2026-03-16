@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   rush-01.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scamlett <scamlett@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: lupin <lupin@student.42malaga.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/14 11:56:10 by scamlett          #+#    #+#             */
-/*   Updated: 2026/03/14 18:51:23 by scamlett         ###   ########.fr       */
+/*   Updated: 2026/03/15 19:33:42 by lupin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 
-int		check_view(int board[4][4], int *clues);
+int		check_board(int board[4][4], int *clues);
 void	print_board(int board[4][4]);
 
 int	is_value_in_line(int board[4][4], int index, int value, int is_row)
@@ -31,24 +31,24 @@ int	is_value_in_line(int board[4][4], int index, int value, int is_row)
 	return (0);
 }
 
-int	solve_cell(int board[4][4], int *clues, int position)
+int	solve_cell(int board[4][4], int *clues, int cell)
 {
 	int	row;
 	int	column;
 	int	value;
 
-	if (position == 4 * 4)
-		return (check_view(board, clues));
-	row = position / 4;
-	column = position % 4;
+	if (cell == 4 * 4)
+		return (check_board(board, clues));
+	row = cell / 4;
+	column = cell % 4;
 	value = 1;
 	while (value <= 4)
 	{
-		if (!is_value_in_line(board, row, value, 1) && !is_value_in_line(board,
-				column, value, 0))
+		if (!is_value_in_line(board, row, value, 1)
+			&& !is_value_in_line(board, column, value, 0))
 		{
 			board[row][column] = value;
-			if (solve_cell(board, clues, position + 1))
+			if (solve_cell(board, clues, cell + 1))
 				return (1);
 			board[row][column] = 0;
 		}
@@ -57,40 +57,41 @@ int	solve_cell(int board[4][4], int *clues, int position)
 	return (0);
 }
 
-int	solve(int board[4][4], int *clues)
+int	init(int board[4][4], int *clues)
 {
-	int	position;
+	int	cell;
 
-	position = 0;
-	while (position < 4 * 4)
+	cell = 0;
+	while (cell < 4 * 4)
 	{
-		board[position / 4][position % 4] = 0;
-		position++;
+		board[cell / 4][cell % 4] = 0;
+		cell++;
 	}
 	return (solve_cell(board, clues, 0));
 }
 
 int	parse(char *text, int *clues)
 {
-	int	i;
+	int	index;
 	int	counter;
 
-	i = 0;
+	index = 0;
 	counter = 0;
-	while (text[i])
+	while (counter < 4 * 4)
 	{
-		if (text[i] >= '1' && text[i] <= '4')
-		{
-			if (counter >= 4 * 4)
-				return (0);
-			clues[counter] = text[i] - '0';
-			counter++;
-		}
-		else if (text[i] != ' ')
+		if (text[index] < '1' || text[index] > '4')
 			return (0);
-		i++;
+		clues[counter] = text[index] - '0';
+		counter++;
+		index++;
+		if (counter < 4 * 4)
+		{
+			if (text[index] != ' ')
+				return (0);
+			index++;
+		}
 	}
-	return (counter == 4 * 4);
+	return (text[index] == '\0');
 }
 
 int	main(int argc, char *argv[])
@@ -108,7 +109,7 @@ int	main(int argc, char *argv[])
 		write(1, "Error\n", 6);
 		return (1);
 	}
-	if (!solve(board, clues))
+	if (!init(board, clues))
 	{
 		write(1, "Error\n", 6);
 		return (1);
